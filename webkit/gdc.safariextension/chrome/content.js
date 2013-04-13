@@ -92,6 +92,11 @@ const DOMAINS = [
   'voice.google.com'
 ];
 
+const WHITE_LIST = [
+  'my.boisestate.edu/pages/agreements.aspx',
+  'weather.gov'
+];
+
 /*
   Determines whether any of a bucket of domains is part of a URL, regex free.
 */
@@ -103,7 +108,9 @@ function isMatching(url, domains) {
 }
 
 /* Traps and selectively cancels a request. */
-if (!isMatching(top.location.href, DOMAINS.concat(PRIMARY_DOMAIN)))
+if (!isMatching(top.location.href, DOMAINS.concat(PRIMARY_DOMAIN))
+		&& !isMatching(top.location.href, WHITE_LIST))
     document.addEventListener('beforeload', function(event) {
-      if (isMatching(event.url, DOMAINS)) event.preventDefault();
+      if (isMatching(event.url, DOMAINS))
+	      event.preventDefault();
     }, true); // TODO: Test every parent up to the top.
