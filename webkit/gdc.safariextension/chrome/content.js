@@ -97,6 +97,17 @@ const WHITE_LIST = [
   'weather.gov'
 ];
 
+const BLACK_LIST = [
+  'ktvb.com',
+  'cnn.com',
+  'hckrnews.com',
+  'foxnews.com',
+  'weather.gov',
+  'weather.com',
+  'arstechnica.com',
+  'wired.com'
+];
+
 /*
   Determines whether any of a bucket of domains is part of a URL, regex free.
 */
@@ -111,6 +122,11 @@ function isMatching(url, domains) {
 if (!isMatching(top.location.href, DOMAINS.concat(PRIMARY_DOMAIN))
 		&& !isMatching(top.location.href, WHITE_LIST))
     document.addEventListener('beforeload', function(event) {
-      if (isMatching(event.url, DOMAINS))
-	      event.preventDefault();
+      if (isMatching(event.url, DOMAINS)
+	      || isMatching(event.url, BLACK_LIST))
+      {
+	      //document.location.href = "../";
+	      //event.preventDefault();
+	      document.location = "http://www.google.com/";
+      }
     }, true); // TODO: Test every parent up to the top.
